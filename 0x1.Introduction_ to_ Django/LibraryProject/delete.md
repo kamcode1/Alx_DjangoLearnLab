@@ -1,5 +1,5 @@
 ## Delete Book
-
+from bookshelf.models import Book
 ### Python Command
 ```python
 # Delete the book
