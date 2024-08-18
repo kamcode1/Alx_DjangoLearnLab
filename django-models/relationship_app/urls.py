@@ -3,7 +3,7 @@ from django.contrib.auth import views as auth_views
 from .views import list_books, LibraryDetailView, register
 
 urlpatterns = [
-    # Task 1: URL patterns
+    # Task 1: URL patterns added
     path('books/', list_books, name='list_books'),
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
 
