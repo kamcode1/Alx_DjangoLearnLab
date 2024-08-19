@@ -99,6 +99,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# settings.py
+
+# ... other settings ...
+
+# Authentication settings
+LOGIN_REDIRECT_URL = 'list_books'  # Redirect after successful login
+LOGOUT_REDIRECT_URL = 'login'      # Redirect after logout
+LOGIN_URL = 'login'                # URL to redirect to when login is required
+
+# ... remaining settings ...
 
 
 # Internationalization
