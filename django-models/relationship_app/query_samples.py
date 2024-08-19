@@ -5,7 +5,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project_name.settings')
 django.setup()
 
-from relationship_app.models import Author, Book, Library, Librarian
+from .models import Author, Book, Library, Librarian
 
 # Sample Query 1: Query all books by a specific author
 def query_books_by_author(author_name):

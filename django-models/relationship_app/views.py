@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
-from .models import Book  # Ensure Library is imported
-from .models import Library
-from django.views.generic.detail import DetailView
+from .models import Book, Library   
+
 
 def list_books(request):
     books = Book.objects.all()
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+    context = {'list_books': books}
+    return render(request, 'relationship_app/list_books.html', context)
 
 class LibraryDetailView(DetailView):
     model = Library
