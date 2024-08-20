@@ -1,7 +1,5 @@
 from django.urls import path
-
-from relationship_app import admin_view, librarian_view, member_view
-from . import views
+from relationship_app import views  # Import views directly
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -18,7 +16,9 @@ urlpatterns = [
 
     # Registration view (custom)
     path('register/', views.register, name='register'),
-    path('admin_dashboard/', admin_view.admin_dashboard, name='admin_dashboard'),
-    path('librarian_dashboard/', librarian_view.librarian_dashboard, name='librarian_dashboard'),
-    path('member_dashboard/', member_view.member_dashboard, name='member_dashboard'),
+
+    # Role-based views
+    path('admin_dashboard/', views.admin_view, name='admin_dashboard'),
+    path('librarian_dashboard/', views.librarian_view, name='librarian_dashboard'),
+    path('member_dashboard/', views.member_view, name='member_dashboard'),
 ]
