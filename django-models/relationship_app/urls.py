@@ -15,5 +15,5 @@ urlpatterns = [
     path('custom_logout/', views.CustomLogoutView.as_view(), name='custom_logout'),
 
     # Registration view (custom)
-    path('register/', views.register.as_view(), name='register'),
+    path('register/', views.register, name='register'),
 ]

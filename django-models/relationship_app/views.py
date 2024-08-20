@@ -4,6 +4,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
 from .models import Book
+from django.db import models
 from django.contrib import messages
 from .models import Library  
 from django.contrib.auth import authenticate
@@ -11,6 +12,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout
 from django.contrib.auth import login
 from django.views import View
+from django.contrib.auth.models import User
 
 def list_books(request):
     books = Book.objects.all()
@@ -60,3 +62,7 @@ class CustomLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('login')  # Redirect to login page after logout
+    
+class UserProfile(User):
+    role = models.CharField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
