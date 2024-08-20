@@ -1,4 +1,6 @@
 from django.urls import path
+
+from relationship_app import admin_view, librarian_view, member_view
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView
 
@@ -16,4 +18,7 @@ urlpatterns = [
 
     # Registration view (custom)
     path('register/', views.register, name='register'),
+    path('admin_dashboard/', admin_view.admin_dashboard, name='admin_dashboard'),
+    path('librarian_dashboard/', librarian_view.librarian_dashboard, name='librarian_dasboard'),
+    path('member_dashboard/', member_view.member_dashboard, name='member_dashboard'),
 ]
