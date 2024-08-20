@@ -63,6 +63,3 @@ class CustomLogoutView(View):
         logout(request)
         return redirect('login')  # Redirect to login page after logout
     
-class UserProfile(User):
-    role = models.CharField()
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
