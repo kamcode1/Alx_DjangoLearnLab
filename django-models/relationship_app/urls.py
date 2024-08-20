@@ -19,6 +19,6 @@ urlpatterns = [
     # Registration view (custom)
     path('register/', views.register, name='register'),
     path('admin_dashboard/', admin_view.admin_dashboard, name='admin_dashboard'),
-    path('librarian_dashboard/', librarian_view.librarian_dashboard, name='librarian_dasboard'),
+    path('librarian_dashboard/', librarian_view.librarian_dashboard, name='librarian_dashboard'),
     path('member_dashboard/', member_view.member_dashboard, name='member_dashboard'),
 ]
