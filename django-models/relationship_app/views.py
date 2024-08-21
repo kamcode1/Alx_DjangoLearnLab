@@ -5,7 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
 from .models import Book, UserProfile
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
+from django.contrib.auth import login
+from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.views import View
 from django.contrib.auth.decorators import user_passes_test
