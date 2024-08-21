@@ -1,7 +1,7 @@
 from django.urls import path
 from relationship_app import views  # Import views directly
 from django.contrib.auth.views import LoginView, LogoutView
-
+from .views import list_books
 
 urlpatterns = [
     path('books/', views.list_books, name='list_books'),  # Function-based view
