@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import CreateView
-from .models import Book, Library, UserProfile
+from .models import Book, UserProfile
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -11,7 +11,7 @@ from django.views import View
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import permission_required
 from .forms import BookForm
-
+from .models import Library
 # Function-based view to list books
 def list_books(request):
     books = Book.objects.all()
