@@ -1,0 +1,19 @@
+<!-- templates/bookshelf/book_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <!-- Security headers like CSP should be set in your settings or middleware -->
+</head>
+<body>
+    <h1>Available Books</h1>
+    <ul>
+        {% for book in books %}
+            <li>{{ book.title|escape }} by {{ book.author|escape }} ({{ book.publication_year }})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

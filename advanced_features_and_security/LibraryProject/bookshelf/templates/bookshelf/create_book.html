@@ -1,0 +1,19 @@
+<!-- templates/bookshelf/create_book.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Book</title>
+    <!-- Security headers like CSP should be set in your settings or middleware -->
+</head>
+<body>
+    <h1>Create a New Book</h1>
+    <form method="post">
+        {% csrf_token %}  <!-- CSRF token for protection -->
+        {{ form.as_p }}   <!-- Safely rendered form fields -->
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>
