@@ -11,7 +11,7 @@ class BookListCreateAPIView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access
-class BookList(ListAPIView):
+class BookList(generics.ListAPIView):
     """
     API view to retrieve list of books.
     """
