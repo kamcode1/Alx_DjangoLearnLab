@@ -3,7 +3,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token  # Import token auth view
-from .views import BookViewSet, BookListCreateAPIView, BookList  # Import your views including the new BookList
+from .views import BookList, BookViewSet, BookListCreateAPIView  # Import your views including the new BookList
 
 # Initialize the router
 router = DefaultRouter()
@@ -18,7 +18,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
 
     # New URL pattern for the BookList view
-    path('api/books-list/', BookList.as_view(), name='book-list'),  # Add new URL pattern for the BookList view
+    path('books-list/', BookList.as_view(), name='book-list'),  # Add new URL pattern for the BookList view
     
     # Token authentication endpoint
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
