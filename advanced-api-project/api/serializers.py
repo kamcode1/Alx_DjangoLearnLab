@@ -9,6 +9,7 @@ class BookSerializer(serializers.Serializer):
     """
     
     class Meta:
+        model = Book
         fields = ['title', 'publication_year', 'author']
 
     def validate_publication_year(self, value):
@@ -24,4 +25,5 @@ class AuthorSerializer(serializers.Serializer):
 
     books = BookSerializer(many=True, read_only=True)
     class Meta:
+        model = Author
         fields = ['name', 'books']
