@@ -3,7 +3,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from .models import Book
 from .serializers import BookSerializer
 from django_filters import rest_framework as filters
-from rest_framework.filters import SearchFilter
 
 class BookFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
@@ -20,10 +19,10 @@ class BookListView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allows read-only access for unauthenticated users, full access for authenticated users
     filterset_class = BookFilter
-    search_fields = ['title', 'author']  # fields to be searchable
-    filter_backends = (filters.DjangoFilterBackend, SearchFilter, filters.OrderingFilter)  # Ensure OrderingFilter is included
-    ordering_fields = ['title', 'publication_year']  # fields to be ordered by
-    ordering = ['title']  # default ordering
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)  # Use filters.OrderingFilter and filters.SearchFilter
+    search_fields = ['title', 'author']  # Fields to be searchable
+    ordering_fields = ['title', 'publication_year']  # Fields to be ordered by
+    ordering = ['title']  # Default ordering
 
 # View to handle retrieving, updating, and deleting a book by ID
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
