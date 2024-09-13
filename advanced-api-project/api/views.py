@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from .models import Book
 from .serializers import BookSerializer
 from django_filters import rest_framework as filters
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import SearchFilter
 
 class BookFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
@@ -21,7 +21,7 @@ class BookListView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allows read-only access for unauthenticated users, full access for authenticated users
     filterset_class = BookFilter
     search_fields = ['title', 'author']  # fields to be searchable
-    filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)  # Ensure OrderingFilter is included
+    filter_backends = (filters.DjangoFilterBackend, SearchFilter, filters.OrderingFilter)  # Ensure OrderingFilter is included
     ordering_fields = ['title', 'publication_year']  # fields to be ordered by
     ordering = ['title']  # default ordering
 
