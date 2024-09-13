@@ -13,6 +13,7 @@ class BookFilter(filters.FilterSet):
     class Meta:
         model = Book
         fields = ['title', 'author', 'publication_year']
+
 # View to handle listing all books and creating a new book
 class BookListView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -20,9 +21,10 @@ class BookListView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]  # Allows read-only access for unauthenticated users, full access for authenticated users
     filterset_class = BookFilter
     search_fields = ['title', 'author']  # fields to be searchable
-    filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)  # Ensure OrderingFilter is included
     ordering_fields = ['title', 'publication_year']  # fields to be ordered by
     ordering = ['title']  # default ordering
+
 # View to handle retrieving, updating, and deleting a book by ID
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
