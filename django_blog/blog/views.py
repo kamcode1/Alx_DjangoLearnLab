@@ -90,7 +90,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         post = self.get_object()
-        return self.request.user == Post.author  # Ensure only the author can edit
+        return self.request.user == post.author  # Ensure only the author can edit
 
 # DeleteView to let authors delete their posts
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -99,5 +99,5 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('post-list')  # Redirect after successful deletion
 
     def test_func(self):
-        Post = self.get_object()
-        return self.request.user == Post.author  # Ensure only the author can delete
+        post = self.get_object()
+        return self.request.user == post.author  # Ensure only the author can delete
