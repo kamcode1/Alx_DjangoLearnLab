@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .models import post
+from .models import Post
 from .forms import CustomUserCreationForm, UserUpdateForm, PostForm
 
 # ------------------- Authentication Views -------------------
@@ -58,19 +58,19 @@ def logout_view(request):
 
 # ListView to display all blog posts
 class PostListView(ListView):
-    model = post
+    model = Post
     template_name = 'blog/post_list.html'  # Template for listing posts
     context_object_name = 'posts'
     ordering = ['-published_date']  # Order posts by newest first
 
 # DetailView to show individual blog posts
 class PostDetailView(DetailView):
-    model = post
+    model = Post
     template_name = 'blog/post_detail.html'  # Template for post details
 
 # CreateView to allow authenticated users to create new posts
 class PostCreateView(LoginRequiredMixin, CreateView):
-    model = post
+    model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'  # Template for creating/editing posts
 
@@ -80,7 +80,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 # UpdateView to enable post authors to edit their posts
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = post
+    model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'  # Reusing the create form template
 
@@ -90,14 +90,14 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author  # Ensure only the author can edit
+        return self.request.user == Post.author  # Ensure only the author can edit
 
 # DeleteView to let authors delete their posts
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = post
+    model = Post
     template_name = 'blog/post_confirm_delete.html'  # Template for confirming deletion
     success_url = reverse_lazy('post-list')  # Redirect after successful deletion
 
     def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author  # Ensure only the author can delete
+        Post = self.get_object()
+        return self.request.user == Post.author  # Ensure only the author can delete
