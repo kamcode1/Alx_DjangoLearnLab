@@ -1,10 +1,10 @@
 {% extends "blog/base.html" %}
 
-{% block title %}Posts tagged with "{{ tag }}"{% endblock %}
+{% block title %}Posts tagged with "{{ tag.name }}"{% endblock %}
 
 {% block content %}
     <div class="tagged-posts">
-        <h2>Posts tagged with "{{ tag }}"</h2>
+        <h2>Posts tagged with "{{ tag.name }}"</h2>
         {% if posts %}
             <ul>
                 {% for post in posts %}

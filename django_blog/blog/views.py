@@ -158,21 +158,22 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         comment = self.get_object()
         return self.request.user == comment.author
 
-class TaggedPostsView(ListView):
+class PostByTagListView(ListView):
     model = Post
-    template_name = 'blog/tagged_posts.html'  # You'll create this template
+    template_name = 'blog/post_by_tag.html'  # Template to display posts by tag
     context_object_name = 'posts'
 
     def get_queryset(self):
-        # Get the tag by its slug
-        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
-        # Filter posts by the tag
+        tag_slug = self.kwargs.get('tag_slug')
+        # Get the tag based on the slug from the URL
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        # Filter posts that have the specified tag
         return Post.objects.filter(tags__in=[tag])
 
     def get_context_data(self, **kwargs):
-        # Add tag to the context
         context = super().get_context_data(**kwargs)
-        context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        # Add the tag to the context for display purposes
+        context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
         return context
        
 class SearchResultsView(ListView):
