@@ -1,8 +1,9 @@
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Post, Comment, Tag
-
+from .models import Post, Comment
+from taggit.forms import TagWidget
 
 # Custom Registration Form
 class CustomUserCreationForm(UserCreationForm):
@@ -28,15 +29,12 @@ class UserUpdateForm(forms.ModelForm):
         fields = ["username", "email"]  # Add other fields if you extend the User model
 
 class PostForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
-        widget= forms.CheckboxSelectMultiple,
-        required=False,
-    )
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
-
+    Widget = {
+        'tags': TagWidget(),
+    } 
 
 class CommentForm(forms.ModelForm):
     class Meta:

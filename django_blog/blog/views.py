@@ -10,7 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 
-from .models import Post, Comment, Tag
+from .models import Post, Comment
 from .forms import CustomUserCreationForm, UserUpdateForm, PostForm, CommentForm
 
 # ------------------- Authentication Views -------------------
