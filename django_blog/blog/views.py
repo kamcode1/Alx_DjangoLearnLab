@@ -1,5 +1,6 @@
 # blog/views.py
 
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
@@ -7,9 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
 
-from .models import Post
-from .forms import CustomUserCreationForm, UserUpdateForm, PostForm
+from .models import Post, Comment
+from .forms import CustomUserCreationForm, UserUpdateForm, PostForm, CommentForm
 
 # ------------------- Authentication Views -------------------
 
@@ -68,6 +70,34 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'  # Template for post details
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Use self.get_object() to ensure the object is retrieved properly
+        post = self.get_object()
+        #Add comments related to the post
+        context['comments'] = post.comments.all()
+        # Add a blank form for adding a comment
+        if self.request.user.is_authenticated:
+            context['comment_form'] = CommentForm()
+        return context
+    
+    # Handle POST requests to add new comments
+    def post(self, request, *args, **kwargs):
+        # Use get_object() to retrieve the post
+        post = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user  # Set the comment author to the logged-in user
+            comment.post = post  # Link the comment to the post
+            comment.save()
+            return redirect('post-detail', pk=post.pk)
+        else:
+            # Re-render the page with the form and errors
+            return self.get(request, *args, **kwargs)
+
+
+
 # CreateView to allow authenticated users to create new posts
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -101,3 +131,28 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author  # Ensure only the author can delete
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+    
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def get_success_url(self):
+        post = self.get_object().post
+        return reverse_lazy('post-detail', kwargs={'pk': post.pk})
+    
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author

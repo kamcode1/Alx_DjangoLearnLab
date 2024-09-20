@@ -2,12 +2,14 @@
 
 from django.urls import path
 from .views import (
-    register, login_view, logout_view, profile,  # Authentication views
+    CommentDeleteView, register, login_view, logout_view, profile,  # Authentication views
     PostListView, PostDetailView, PostCreateView,  # CRUD views for Post model
-    PostUpdateView, PostDeleteView
+    PostUpdateView, PostDeleteView, CommentUpdateView, CommentDeleteView
 )
 
 urlpatterns = [
+    # Home URL
+    path('', PostListView.as_view(), name='home'),  # Home Page
     # Authentication URLs
     path('register/', register, name='register'),
     path('login/', login_view, name='login'),
@@ -20,5 +22,9 @@ urlpatterns = [
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),  # View post details
     path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),  # Edit a post
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),  # Delete a post
+
+    #comment URLS
+    path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='comment-update'),
+    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name = 'comment-delete'),
 ]
 

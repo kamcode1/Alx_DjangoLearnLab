@@ -148,3 +148,6 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_URL = 'login'  # Use the name of your login URL pattern
+LOGIN_REDIRECT_URL = 'profile'  # Use the name of your profile URL pattern
