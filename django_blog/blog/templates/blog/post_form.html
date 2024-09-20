@@ -10,7 +10,8 @@
         <h2>{% if object %}Edit Post{% else %}New Post{% endif %}</h2>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_p }}    <!-- This renders the title, content, and tags fields -->
+
             <button type="submit">Save</button>
         </form>
     </div>

@@ -7,6 +7,10 @@
     <title>{% block title %}Django Blog{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+<form method="GET" action="{% url 'search-results' %}">
+    <input type="text" name="q" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>
 <body>
     <header>
         <nav>

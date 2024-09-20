@@ -1,6 +1,7 @@
 # blog/views.py
 
 
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login, logout
@@ -9,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from taggit.models import Tag
 
 from .models import Post, Comment
 from .forms import CustomUserCreationForm, UserUpdateForm, PostForm, CommentForm
@@ -154,3 +157,32 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
+class TaggedPostsView(ListView):
+    model = Post
+    template_name = 'blog/tagged_posts.html'  # You'll create this template
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        # Get the tag by its slug
+        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        # Filter posts by the tag
+        return Post.objects.filter(tags__in=[tag])
+
+    def get_context_data(self, **kwargs):
+        # Add tag to the context
+        context = super().get_context_data(**kwargs)
+        context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        return context
+       
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Post.objects.filter(
+            Q(title_icontatins=query) |
+            Q(content_icontains=query) |
+            Q(tags_name_icontains=query)
+        ).distinct()

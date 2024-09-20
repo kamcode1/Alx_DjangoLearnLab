@@ -1,0 +1,14 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+    <h2>Search Results for "{{ request.GET.q }}"</h2>
+    <ul>
+        {% for post in object_list %}
+            <li>
+                <a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a>
+            </li>
+        {% empty %}
+            <p>No posts found.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
