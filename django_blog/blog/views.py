@@ -80,21 +80,6 @@ class PostDetailView(DetailView):
         if self.request.user.is_authenticated:
             context['comment_form'] = CommentForm()
         return context
-    
-    # Handle POST requests to add new comments
-    def post(self, request, *args, **kwargs):
-        # Use get_object() to retrieve the post
-        post = self.get_object()
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user  # Set the comment author to the logged-in user
-            comment.post = post  # Link the comment to the post
-            comment.save()
-            return redirect('post-detail', pk=post.pk)
-        else:
-            # Re-render the page with the form and errors
-            return self.get(request, *args, **kwargs)
 
 
 
@@ -131,7 +116,20 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author  # Ensure only the author can delete
+    
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'  # Assuming you have this template
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user  # Set the author to the logged-in user
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])  # Set the post related to the comment
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.object.post.get_absolute_url()  # Redirect back to the post detail page after the comment is submitted
+    
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     form_class = CommentForm

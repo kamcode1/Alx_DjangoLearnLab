@@ -1,14 +1,5 @@
-{% extends "blog/base.html" %}
-
-{% block title %}Edit Comment{% endblock %}
-
-{% block content %}
-    <div class="comment-form">
-        <h2>{% if comment.pk %}Edit Comment{% else %}Add Comment{% endif %}</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">{% if comment.pk %}Update{% else %}Submit{% endif %}</button>
-        </form>
-    </div>
-{% endblock %}
+<form method="post" action="{% url 'comment-create' post.pk %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Submit</button>
+</form>
