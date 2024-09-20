@@ -178,11 +178,13 @@ class TaggedPostsView(ListView):
 class SearchResultsView(ListView):
     model = Post
     template_name = 'blog/search_results.html'
-
+    context_object_name = 'posts'
     def get_queryset(self):
         query = self.request.GET.get('q')
-        return Post.objects.filter(
-            Q(title_icontatins=query) |
-            Q(content_icontains=query) |
-            Q(tags_name_icontains=query)
-        ).distinct()
+        if query:
+            return Post.objects.filter(
+                Q(title__icontains=query) |  # Search in post title
+                Q(content__icontains=query) |  # Search in post content
+                Q(tags__name__icontains=query)  # Search in post tags
+            ).distinct()  # Ensure we don't get duplicate posts
+        return Post.objects.all()
