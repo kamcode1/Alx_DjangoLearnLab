@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -24,3 +25,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'comment by {self.author.username} on {self.post.title}'
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+    post = models.ManyToManyField(Post, related_name='tags')
+
+    def __str__(self):
+        return self.name
