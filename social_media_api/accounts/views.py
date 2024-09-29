@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
+from rest_framework import permissions  # Import permissions from Django REST Framework
 from .models import User as CustomUser
 from .serializers import RegisterSerializer, UserSerializer
 
