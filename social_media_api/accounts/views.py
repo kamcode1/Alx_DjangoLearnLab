@@ -35,16 +35,15 @@ class LoginView(generics.GenericAPIView):
         return Response({'error': 'Invalid Credentials'}, status=400)
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])  # Make sure IsAuthenticated is used directly here
 def follow_user(request, user_id):
-    user_to_follow = get_object_or_404(CustomUser, id=user_id)  # Use CustomUser here
+    user_to_follow = get_object_or_404(User, id=user_id)
     request.user.following.add(user_to_follow)
     return Response({'message': f'You are now following {user_to_follow.username}.'}, status=status.HTTP_200_OK)
 
-
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([permissions.IsAuthenticated])  # Use permissions.IsAuthenticated here as well
 def unfollow_user(request, user_id):
-    user_to_unfollow = get_object_or_404(CustomUser, id=user_id)  # Use CustomUser here
+    user_to_unfollow = get_object_or_404(User, id=user_id)
     request.user.following.remove(user_to_unfollow)
     return Response({'message': f'You have unfollowed {user_to_unfollow.username}.'}, status=status.HTTP_200_OK)
