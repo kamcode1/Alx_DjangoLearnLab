@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import User
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate
 from .serializers import RegisterSerializer, UserSerializer
 
@@ -13,9 +14,19 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        user = super().create(request, *args, **kwargs)
+        # Call the serializer to create the user
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Create a token for the new user
         token = Token.objects.create(user=user)
-        return Response({'token': token.key})
+
+        # Return the user data and token
+        return Response({
+            'user': UserSerializer(user).data,
+            'token': token.key
+        })
 
 class LoginView(generics.GenericAPIView):
     permission_classes = [AllowAny]
