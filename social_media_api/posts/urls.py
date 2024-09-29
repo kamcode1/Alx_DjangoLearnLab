@@ -1,13 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet
+from .views import PostViewSet, CommentViewSet, user_feed
 
-# Create a router to register the viewsets
 router = DefaultRouter()
-router.register(r'posts', PostViewSet)  # The 'r' indicates that 'posts' is a raw string
+router.register(r'posts', PostViewSet)
 router.register(r'comments', CommentViewSet)
 
-# Define URL patterns
 urlpatterns = [
-    path('', include(router.urls)),  # Include the router-generated URLs
+    path('', include(router.urls)),
+    path('feed/', user_feed, name='user_feed'),  # User feed
 ]
